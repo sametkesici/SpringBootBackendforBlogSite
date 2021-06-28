@@ -32,6 +32,7 @@ public class MyControllerAdvice  {
     for(FieldError fieldError : ex.getBindingResult().getFieldErrors()){
       validationErrors.put(fieldError.getField(),fieldError.getDefaultMessage());
     }
+
     return new ErrorDataResponse<>(validationErrors, false, "validation errors");
   }
 
