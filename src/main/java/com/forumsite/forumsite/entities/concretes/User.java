@@ -1,5 +1,6 @@
 package com.forumsite.forumsite.entities.concretes;
 
+import com.forumsite.forumsite.core.annotations.UniqueUsername;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +26,7 @@ public class User {
   private int id;
 
   @NotNull
+  @UniqueUsername
   private String username;
 
   @NotNull
