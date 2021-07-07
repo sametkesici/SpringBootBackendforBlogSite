@@ -13,16 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api-article")
+@RequestMapping("/api/1.0/articles")
 @RequiredArgsConstructor
 public class ArticleController {
 
   private final ArticleService articleService;
 
   @PostMapping("/add-article")
-  public Response addArticle(@Valid  @RequestBody  Article article){
+  public Response addArticle(@Valid @RequestBody Article article) {
     articleService.addArticle(article);
-    return new SuccessResponse(true,"article successfully added");
+    return new SuccessResponse(true, "article successfully added");
   }
-
 }

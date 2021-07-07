@@ -9,6 +9,7 @@ import com.forumsite.forumsite.entities.concretes.User;
 import com.forumsite.forumsite.entities.dtos.UserDto;
 import com.forumsite.forumsite.entities.mappers.UserMapper;
 import java.util.List;
+import java.util.Optional;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api-user")
+@RequestMapping("/api/1.0/users/")
 @RequiredArgsConstructor
 public class UserController {
 

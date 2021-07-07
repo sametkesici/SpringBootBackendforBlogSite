@@ -10,18 +10,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import springfox.documentation.spring.web.plugins.Docket;
 
 @SpringBootApplication
-@EnableSwagger2
 public class ForumsiteApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(ForumsiteApplication.class, args);
   }
 
-  @Bean
-  public Docket api() {
-    return new Docket(DocumentationType.SWAGGER_2)
-        .select()
-        .apis(RequestHandlerSelectors.basePackage("com.forumsite.forumsite"))
-        .build();
-  }
+
 }

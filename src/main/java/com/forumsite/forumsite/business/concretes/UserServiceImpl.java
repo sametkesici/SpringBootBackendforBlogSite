@@ -6,6 +6,7 @@ import com.forumsite.forumsite.entities.concretes.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +15,7 @@ public class UserServiceImpl implements UserService {
   private final UserDao userDao;
 
   @Override
+  @Transactional
   public User addUser(User user) {
     return userDao.save(user);
   }
@@ -25,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User getUser(String username) {
-    return userDao.getByUsername(username);
+    return userDao.findByUsername(username);
   }
 }
 
