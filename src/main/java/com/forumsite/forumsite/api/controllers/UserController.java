@@ -7,9 +7,10 @@ import com.forumsite.forumsite.core.responses.SuccessDataResponse;
 import com.forumsite.forumsite.core.responses.SuccessResponse;
 import com.forumsite.forumsite.entities.concretes.User;
 import com.forumsite.forumsite.entities.dtos.UserDto;
+import com.forumsite.forumsite.entities.dtos.UserRegisterDto;
 import com.forumsite.forumsite.entities.mappers.UserMapper;
+import com.forumsite.forumsite.entities.mappers.UserRegisterMapper;
 import java.util.List;
-import java.util.Optional;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/1.0/users/")
+@RequestMapping("/api/1.0/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -28,18 +29,20 @@ public class UserController {
 
   private final UserMapper userMapper;
 
-  @PostMapping("add")
-  public Response addUser(@Valid @RequestBody User user) {
-    userService.addUser(user);
+  private final UserRegisterMapper userRegisterMapper;
+
+  @PostMapping("/add")
+  public Response registerUser(@Valid @RequestBody UserRegisterDto userRegisterDto) {
+    userService.registerUser(userRegisterMapper.toEntity(userRegisterDto));
     return new SuccessResponse(true, "successfully added user");
   }
 
-  @GetMapping("getUser")
+  @GetMapping("/getUser")
   public DataResponse<UserDto> getUser(@RequestParam String username) {
     return new SuccessDataResponse<>(userMapper.toDto(userService.getUser(username)), true, "get user");
   }
 
-  @GetMapping("get-all")
+  @GetMapping("/get-all")
   public DataResponse<List<UserDto>> getAllUsers() {
     return new SuccessDataResponse<>(userMapper.toDto(userService.getAllUser()), true, "brough all users");
   }

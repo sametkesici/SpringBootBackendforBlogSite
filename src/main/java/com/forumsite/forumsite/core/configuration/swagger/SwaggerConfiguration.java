@@ -1,4 +1,4 @@
-package com.forumsite.forumsite.core.configuration;
+package com.forumsite.forumsite.core.configuration.swagger;
 
 import java.util.Arrays;
 import java.util.Collections;

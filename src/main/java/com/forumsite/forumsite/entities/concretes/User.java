@@ -2,6 +2,7 @@ package com.forumsite.forumsite.entities.concretes;
 
 import com.forumsite.forumsite.core.annotations.UniqueUsername;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
@@ -23,14 +24,17 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;;
 
 @Entity
 @Table(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements Serializable {
+public class User implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +45,6 @@ public class User implements Serializable {
   @UniqueUsername
   private String username;
 
-  @NotNull
   @Email
   private String email;
 
@@ -54,13 +57,30 @@ public class User implements Serializable {
   @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
   private List<Article> articles;
 
-  private String[] roles;
+  private String token;
 
-  private String[] authorities;
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return AuthorityUtils.createAuthorityList("Role_user");
+  }
 
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
 
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
 
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
 
-
-
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
 }

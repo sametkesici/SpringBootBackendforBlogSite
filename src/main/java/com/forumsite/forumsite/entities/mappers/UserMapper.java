@@ -9,7 +9,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface UserMapper extends BaseMapper<User, UserDto> {
 
-  UserDto toDto(Optional<User> user);
+  UserDto toDto(User user);
 
   User toEntity(UserDto dto);
 

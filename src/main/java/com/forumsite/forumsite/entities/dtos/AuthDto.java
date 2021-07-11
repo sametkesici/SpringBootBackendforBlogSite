@@ -4,11 +4,14 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class UserDto {
+public class AuthDto {
 
-  private int id;
+  private String token;
+
   private String email;
+
   private String username;
+
   private Date timestamp;
 
 }
