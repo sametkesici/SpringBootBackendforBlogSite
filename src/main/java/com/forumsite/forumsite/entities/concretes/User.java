@@ -57,7 +57,8 @@ public class User implements UserDetails {
   @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
   private List<Article> articles;
 
-  private String token;
+  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+  private List<Token> tokens;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

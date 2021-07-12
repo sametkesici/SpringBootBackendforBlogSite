@@ -10,4 +10,6 @@ public interface AuthService {
 
   UserDetails getUserDetails(String token);
 
+  void clearToken(String token);
+
 }

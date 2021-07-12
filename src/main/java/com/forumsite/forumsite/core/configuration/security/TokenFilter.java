@@ -26,11 +26,13 @@ public class TokenFilter extends OncePerRequestFilter {
     if (authorization != null) {
       String token = authorization.substring(7);
       UserDetails user = authService.getUserDetails(token);
-      UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user,
-                                                                                                   null,
-                                                                                                   user.getAuthorities());
-      authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-      SecurityContextHolder.getContext().setAuthentication(authentication);
+      if(user != null){
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user,
+                                                                                                     null,
+                                                                                                     user.getAuthorities());
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+      }
     }
     filterChain.doFilter(request, response);
   }

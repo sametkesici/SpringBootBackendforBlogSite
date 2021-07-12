@@ -2,19 +2,15 @@ package com.forumsite.forumsite.business.concretes;
 
 import com.forumsite.forumsite.business.abstracts.AuthService;
 import com.forumsite.forumsite.business.abstracts.UserService;
-import com.forumsite.forumsite.dataaccess.abstracts.UserDao;
+import com.forumsite.forumsite.dataaccess.abstracts.TokenDao;
+import com.forumsite.forumsite.entities.concretes.Token;
 import com.forumsite.forumsite.entities.concretes.User;
 import com.forumsite.forumsite.entities.dtos.UserLoginDto;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.SignatureAlgorithm;
-import javassist.NotFoundException;
+import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Hibernate;
-import org.hibernate.proxy.HibernateProxy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import io.jsonwebtoken.Jwts;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,29 +22,44 @@ public class AuthServiceImpl implements AuthService {
 
   private final PasswordEncoder passwordEncoder;
 
-  private final UserDao userDao;
+  private final TokenDao tokenDao;
 
   @Override
+  @Transactional
   public User authenticate(UserLoginDto userLoginDto) {
+    Token tokenEntity = new Token();
     User inDB = userService.getUser(userLoginDto.getUsername());
     boolean matches = passwordEncoder.matches(userLoginDto.getPassword(), inDB.getPassword());
     if (matches) {
       throw new IllegalArgumentException("password is false");
     }
-    String token = Jwts.builder().setSubject("" + inDB.getId()).signWith(SignatureAlgorithm.HS512, "my-app-secret").compact();
-    inDB.setToken(token);
+    String token = generateRandomToken();
+    tokenEntity.setToken(token);
+    tokenEntity.setUser(inDB);
+    tokenDao.save(tokenEntity);
     return inDB;
   }
 
   @Override
   @Transactional
   public UserDetails getUserDetails(String token) {
-    JwtParser parser = Jwts.parser().setSigningKey("my-app-secret");
-    parser.parse(token);
-    Claims claims = parser.parseClaimsJws(token).getBody();
-    int userId = Integer.parseInt(claims.getSubject());
-    User user = userDao.getById(userId);
-    User actualUser = (User)((HibernateProxy)user).getHibernateLazyInitializer().getImplementation();
-    return actualUser;
+    Optional<Token> optinalToken =  tokenDao.findById(token);
+    if(optinalToken.isPresent()){
+      return null;
+    }
+    return optinalToken.get().getUser();
   }
+
+  @Override
+  @Transactional
+  public void clearToken(String token) {
+    tokenDao.deleteById(token);
+  }
+
+  public String generateRandomToken(){
+    return UUID.randomUUID().toString().replaceAll("-","");
+  }
+
 }
+
+
