@@ -1,9 +1,11 @@
 package com.forumsite.forumsite.api.controllers;
 
 import com.forumsite.forumsite.business.abstracts.ArticleService;
+import com.forumsite.forumsite.core.annotations.CurrentUser;
 import com.forumsite.forumsite.core.responses.Response;
 import com.forumsite.forumsite.core.responses.SuccessResponse;
 import com.forumsite.forumsite.entities.concretes.Article;
+import com.forumsite.forumsite.entities.concretes.User;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +22,8 @@ public class ArticleController {
   private final ArticleService articleService;
 
   @PostMapping("/add-article")
-  public Response addArticle(@Valid @RequestBody Article article) {
-    articleService.addArticle(article);
+  public Response addArticle(@Valid @RequestBody Article article , @CurrentUser User user) {
+    articleService.addArticle(article,user);
     return new SuccessResponse(true, "article successfully added");
   }
 }

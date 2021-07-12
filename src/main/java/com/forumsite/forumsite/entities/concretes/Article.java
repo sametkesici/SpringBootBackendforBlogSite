@@ -34,7 +34,6 @@ public class Article {
   private Date timestamp;
 
   @ManyToOne
-  @JoinColumn(name = "user_id")
   private User user;
 
 

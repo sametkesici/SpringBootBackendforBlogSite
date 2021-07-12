@@ -1,10 +1,10 @@
 package com.forumsite.forumsite.business.abstracts;
 
-import com.forumsite.forumsite.core.responses.Response;
 import com.forumsite.forumsite.entities.concretes.Article;
+import com.forumsite.forumsite.entities.concretes.User;
 
 public interface ArticleService {
 
-  Article addArticle(Article article);
+  Article addArticle(Article article, User user);
 
 }

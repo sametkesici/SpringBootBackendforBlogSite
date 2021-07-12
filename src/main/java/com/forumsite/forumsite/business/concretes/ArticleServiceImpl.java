@@ -3,6 +3,7 @@ package com.forumsite.forumsite.business.concretes;
 import com.forumsite.forumsite.business.abstracts.ArticleService;
 import com.forumsite.forumsite.dataaccess.abstracts.ArticleDao;
 import com.forumsite.forumsite.entities.concretes.Article;
+import com.forumsite.forumsite.entities.concretes.User;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class ArticleServiceImpl implements ArticleService {
 
   @Override
   @Transactional
-  public Article addArticle(Article article) {
+  public Article addArticle(Article article, User user) {
     return articleDao.save(article);
   }
 
