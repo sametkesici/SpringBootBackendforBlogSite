@@ -1,5 +1,7 @@
 package com.forumsite.forumsite.core.configuration.security;
 
+import antlr.Token;
+import com.forumsite.forumsite.business.concretes.UserAuthServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -17,6 +19,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
+  @Autowired
+  UserAuthServiceImpl userAuthServiceImpl;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -29,7 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
         .authorizeRequests()
         .antMatchers(HttpMethod.GET, "/api/1.0/users/{username}").authenticated()
         .antMatchers(HttpMethod.POST, "/api/1.0/articles").authenticated()
-        .antMatchers(HttpMethod.POST,"/api/1.0/logout").authenticated()
+        .antMatchers(HttpMethod.GET, "/api/1.0/articles").authenticated()
         .and()
         .authorizeRequests().anyRequest().permitAll();
 
@@ -38,6 +42,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     http.addFilterBefore(tokenFilter(), UsernamePasswordAuthenticationFilter.class);
   }
 
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(userAuthServiceImpl).passwordEncoder(passwordEncoder());
+  }
 
   @Bean
   PasswordEncoder passwordEncoder() {
