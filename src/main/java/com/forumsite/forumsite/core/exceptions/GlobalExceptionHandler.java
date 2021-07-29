@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
 
 
   @ExceptionHandler(value = MethodArgumentNotValidException.class)
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseStatus(HttpStatus.FORBIDDEN)
   @ResponseBody
   public DataResponse handleException(HttpServletRequest req, MethodArgumentNotValidException ex)  {
     Map<String,String> validationErrors = new HashMap<String,String>();
@@ -59,6 +59,7 @@ public class GlobalExceptionHandler {
 
     return new ErrorDataResponse<>(validationErrors, false, "pw errors");
   }
+
 
 
 
