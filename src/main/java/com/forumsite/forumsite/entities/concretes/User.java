@@ -1,14 +1,20 @@
 package com.forumsite.forumsite.entities.concretes;
 
+import static javax.persistence.FetchType.EAGER;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.forumsite.forumsite.core.annotations.UniqueUsername;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +30,9 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;;
@@ -34,19 +42,16 @@ import org.springframework.security.core.userdetails.UserDetails;;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements UserDetails {
+public class User  {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(nullable = false , updatable = false)
-  private int id;
+  private long id;
 
   @NotNull
   @UniqueUsername
   private String username;
-
-  @Email
-  private String email;
 
   @NotNull
   private String password;
@@ -57,31 +62,8 @@ public class User implements UserDetails {
   @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
   private List<Article> articles;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-  private List<Token> tokens;
+  @ManyToMany(fetch = EAGER)
+  private Collection<Role> roles = new ArrayList<>();
 
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return AuthorityUtils.createAuthorityList("Role_user");
-  }
 
-  @Override
-  public boolean isAccountNonExpired() {
-    return true;
-  }
-
-  @Override
-  public boolean isAccountNonLocked() {
-    return true;
-  }
-
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return true;
-  }
-
-  @Override
-  public boolean isEnabled() {
-    return true;
-  }
 }

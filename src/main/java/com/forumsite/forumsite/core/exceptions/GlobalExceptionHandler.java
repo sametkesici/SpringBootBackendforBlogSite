@@ -1,4 +1,4 @@
-package com.forumsite.forumsite.core.globalexceptionhandler;
+package com.forumsite.forumsite.core.exceptions;
 
 import com.forumsite.forumsite.core.responses.DataResponse;
 import com.forumsite.forumsite.core.responses.ErrorDataResponse;
@@ -18,24 +18,24 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class GlobalExceptionHandler {
 
 
-  @ExceptionHandler(value = MethodArgumentNotValidException.class)
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(value = RuntimeException.class)
+  @ResponseStatus(HttpStatus.FORBIDDEN)
   @ResponseBody
-  public DataResponse handleException(HttpServletRequest req, MethodArgumentNotValidException ex)  {
+  public DataResponse<Map<String,String>> handleException(HttpServletRequest req, MethodArgumentNotValidException ex)  {
     Map<String,String> validationErrors = new HashMap<String,String>();
     for(FieldError fieldError : ex.getBindingResult().getFieldErrors()){
       validationErrors.put(fieldError.getField(),fieldError.getDefaultMessage());
     }
     validationErrors.put("requestURI" , req.getRequestURI());
 
-    return new ErrorDataResponse<>(validationErrors, false, "validation errors");
+    return new ErrorDataResponse<>(validationErrors, false, "refresh token is not valid");
   }
 
 
   @ExceptionHandler(value = NotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ResponseBody
-  public DataResponse notFoundException(HttpServletRequest req, MethodArgumentNotValidException ex){
+  public DataResponse<Map<String,String>> notFoundException(HttpServletRequest req, MethodArgumentNotValidException ex){
     Map<String,String> validationErrors = new HashMap<String,String>();
     for(FieldError fieldError : ex.getBindingResult().getFieldErrors()){
       validationErrors.put(fieldError.getField(),fieldError.getDefaultMessage());
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(value = IllegalArgumentException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ResponseBody
-  public DataResponse passwordException(HttpServletRequest req, MethodArgumentNotValidException ex)  {
+  public DataResponse<Map<String,String>> passwordException(HttpServletRequest req, MethodArgumentNotValidException ex)  {
     Map<String,String> validationErrors = new HashMap<String,String>();
     for(FieldError fieldError : ex.getBindingResult().getFieldErrors()){
       validationErrors.put(fieldError.getField(),fieldError.getDefaultMessage());
@@ -59,6 +59,7 @@ public class GlobalExceptionHandler {
 
     return new ErrorDataResponse<>(validationErrors, false, "pw errors");
   }
+
 
 
 

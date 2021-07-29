@@ -6,6 +6,8 @@ import com.forumsite.forumsite.core.responses.Response;
 import com.forumsite.forumsite.core.responses.SuccessResponse;
 import com.forumsite.forumsite.entities.concretes.Article;
 import com.forumsite.forumsite.entities.concretes.User;
+import com.forumsite.forumsite.entities.dtos.ArticleDto;
+import com.forumsite.forumsite.entities.mappers.ArticleMapper;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +23,11 @@ public class ArticleController {
 
   private final ArticleService articleService;
 
+  private final ArticleMapper articleMapper;
+
   @PostMapping("/add-article")
-  public Response addArticle(@Valid @RequestBody Article article , @CurrentUser User user) {
-    articleService.addArticle(article,user);
+  public Response addArticle(@Valid @RequestBody ArticleDto articleDto , @CurrentUser User user) {
+    articleService.addArticle(articleMapper.toEntity(articleDto),user);
     return new SuccessResponse(true, "article successfully added");
   }
 }
