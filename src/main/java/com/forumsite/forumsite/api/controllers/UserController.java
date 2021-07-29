@@ -41,12 +41,12 @@ public class UserController {
     return new SuccessResponse(true, "successfully added user");
   }
 
-  @GetMapping("/get-user")
+  @GetMapping("/getUser")
   public DataResponse<UserDto> getUser(@RequestParam String username) {
     return new SuccessDataResponse<>(userMapper.toDto(userService.getUser(username)), true, "get user");
   }
 
-  @GetMapping("/get-all-users")
+  @GetMapping("/get-all")
   public DataResponse<List<UserDto>> getAllUsers() {
     return new SuccessDataResponse<>(userMapper.toDto(userService.getAllUser()), true, "brough all users");
   }
