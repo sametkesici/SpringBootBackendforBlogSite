@@ -1,11 +1,8 @@
 package com.forumsite.forumsite.api.controllers;
 
-
-
 import com.forumsite.forumsite.core.responses.ErrorDataResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,8 +21,7 @@ public class AuthController {
   private final AuthService authService;
 
   @GetMapping("/token/refresh")
-  public DataResponse<Map<String, String>> refreshToken(HttpServletRequest request, HttpServletResponse response)
-  {
+  public DataResponse<Map<String, String>> refreshToken(HttpServletRequest request, HttpServletResponse response) {
     if (authService.refreshToken(request, response).size() > 1) {
       return new SuccessDataResponse<>(authService.refreshToken(request, response), true, "refresh token is valid");
     } else {
