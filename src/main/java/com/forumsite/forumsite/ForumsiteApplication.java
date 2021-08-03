@@ -24,25 +24,9 @@ public class ForumsiteApplication {
     SpringApplication.run(ForumsiteApplication.class, args);
   }
 
-    @Bean
-    PasswordEncoder passwordEncoder(){
-      return new BCryptPasswordEncoder();
-    }
-
-
-    @Bean
-    CommandLineRunner run(UserService userService){
-    return  args -> {
-      userService.saveRole(new Role(1,"ROLE_USER"));
-      userService.saveRole(new Role(2,"ROLE_ADMIN"));
-
-      userService.registerUser(new User(2,"sametesici" , "blalbla" , new Date() , new ArrayList<>() , new ArrayList<>()));
-      userService.registerUser(new User(1,"sametkesici" , "blalbla" , new Date() , new ArrayList<>() , new ArrayList<>()));
-      userService.registerUser(new User(4,"sameesici" , "blalbla" , new Date() , new ArrayList<>() , new ArrayList<>()));
-      userService.registerUser(new User(3,"11sametkesici" , "blalbla" , new Date() , new ArrayList<>() , new ArrayList<>()));
-
-      userService.addRoleToUser("sametkesici" , "ROLE_USER");
-
-    };
+  @Bean
+  PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
-}
+};
+

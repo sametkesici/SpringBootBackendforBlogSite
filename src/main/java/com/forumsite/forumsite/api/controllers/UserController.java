@@ -48,7 +48,7 @@ public class UserController {
 
   @GetMapping("/get-all")
   public DataResponse<List<UserDto>> getAllUsers() {
-    return new SuccessDataResponse<>(userMapper.toDto(userService.getAllUser()), true, "brough all users");
+    return new SuccessDataResponse<>(userMapper.toDto(userService.getAllUser()), true, "brought all users");
   }
 
   @PostMapping("/role/save")

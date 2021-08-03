@@ -38,12 +38,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     customAuthenticationFilter.setFilterProcessesUrl("/api/1.0/login");
     http.csrf().disable();
     http.sessionManagement().sessionCreationPolicy(STATELESS);
-    http.authorizeRequests().antMatchers("/api/1.0/login/** " , "/api/1.0/token/refresh/**").permitAll();
-    http.authorizeRequests().antMatchers(GET , "/api/1.0/users/**");
-    http.authorizeRequests().antMatchers(POST , "/api/1.0/users/add");
+    http.authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll();
+    http.authorizeRequests().antMatchers("/api/1.0/login/** ", "/api/1.0/token/refresh/**" , "/api/1.0/articles/**").permitAll();
+    http.authorizeRequests().antMatchers( "/api/1.0/users/**" ).permitAll();
+    http.authorizeRequests().antMatchers(POST, "/api/1.0/users/add");
     http.authorizeRequests().anyRequest().authenticated();
     http.addFilter(customAuthenticationFilter);
-    http.addFilterBefore(new CustomAuthorizationFilter() , UsernamePasswordAuthenticationFilter.class);
+    http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
   }
 
   @Bean
@@ -52,5 +53,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     return super.authenticationManagerBean();
   }
 
-
+  private static final String[] AUTH_WHITELIST = {
+      // -- Swagger UI v2
+      "/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/configuration/ui", "/configuration/security",
+      "/swagger-ui.html", "/webjars/**",
+      // -- Swagger UI v3 (OpenAPI)
+      "/v3/api-docs/**", "/swagger-ui/**"
+      // other public endpoints of your API may be appended to this array
+  };
 }

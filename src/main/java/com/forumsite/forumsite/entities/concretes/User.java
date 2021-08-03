@@ -1,8 +1,11 @@
 package com.forumsite.forumsite.entities.concretes;
 
 import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.FetchType.LAZY;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.forumsite.forumsite.core.annotations.UniqueUsername;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -42,11 +45,13 @@ import org.springframework.security.core.userdetails.UserDetails;;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","articles"})
 public class User  {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(nullable = false , updatable = false)
+  @JsonIgnore
   private long id;
 
   @NotNull
@@ -54,6 +59,7 @@ public class User  {
   private String username;
 
   @NotNull
+  @JsonIgnore
   private String password;
 
   @Temporal(TemporalType.TIMESTAMP)

@@ -3,9 +3,8 @@ package com.forumsite.forumsite.entities.dtos;
 import lombok.Data;
 
 @Data
-public class ArticleDto {
+public class ArticleSaveDto {
 
-  public String content;
-
+  private String content;
 
 }

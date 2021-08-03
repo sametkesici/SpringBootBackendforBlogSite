@@ -7,7 +7,6 @@ import lombok.Data;
 public class AuthDto {
 
   private String username;
-
   private Date timestamp;
 
 }

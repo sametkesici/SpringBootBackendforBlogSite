@@ -6,6 +6,7 @@ import com.forumsite.forumsite.dataaccess.abstracts.UserDao;
 import com.forumsite.forumsite.entities.concretes.Role;
 import com.forumsite.forumsite.entities.concretes.User;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -47,11 +48,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
   @Override
   @Transactional
-  public void registerUser(User user) {
+  public User registerUser(User user) {
     log.info("saving new user to the database");
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     user.setTimestamp(new Date());
-    userDao.save(user);
+    addRoleToUser(user.getUsername(),"ROLE_USER");
+    return userDao.save(user);
   }
 
 

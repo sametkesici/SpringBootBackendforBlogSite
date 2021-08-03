@@ -22,11 +22,17 @@ public class AuthController {
 
   @GetMapping("/token/refresh")
   public DataResponse<Map<String, String>> refreshToken(HttpServletRequest request, HttpServletResponse response) {
-    if (authService.refreshToken(request, response).size() > 1) {
-      return new SuccessDataResponse<>(authService.refreshToken(request, response), true, "refresh token is valid");
+
+    Map<String,String> refreshToken = authService.refreshToken(request, response);
+
+    if (refreshToken.size() > 1) {
+      return new SuccessDataResponse<>(refreshToken, true, "refresh token is valid");
     } else {
-      return new ErrorDataResponse<>(authService.refreshToken(request, response), false, "refresh token is not valid");
+      return new ErrorDataResponse<>(refreshToken, false, "refresh token is not valid");
     }
+
+
+
   }
 }
 

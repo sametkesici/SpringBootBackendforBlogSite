@@ -1,10 +1,13 @@
 package com.forumsite.forumsite.entities.concretes;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +36,7 @@ public class Article {
   @Temporal(TemporalType.TIMESTAMP)
   private Date timestamp;
 
-  @ManyToOne
+  @ManyToOne()
   private User user;
 
 
