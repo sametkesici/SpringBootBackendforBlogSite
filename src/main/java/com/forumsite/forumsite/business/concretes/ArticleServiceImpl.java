@@ -36,6 +36,7 @@ public class ArticleServiceImpl implements ArticleService {
     return articleDao.findAll();
   }
 
+
   public Page<Article> getArticlesOfUser(String username, Pageable page) {
     return articleDao.findByUser(userService.getUser(username), page);
   }

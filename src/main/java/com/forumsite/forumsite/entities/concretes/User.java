@@ -68,6 +68,9 @@ public class User  {
   @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
   private List<Article> articles;
 
+  @OneToMany(mappedBy = "user" , cascade = CascadeType.REMOVE)
+  private List<Comment> comments;
+
   @ManyToMany(fetch = EAGER)
   private Collection<Role> roles = new ArrayList<>();
 
